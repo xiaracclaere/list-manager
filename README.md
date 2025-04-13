@@ -91,3 +91,8 @@ The recommend versions are grouped:
 
 Because of **safety**. Older versions are not tested and they might have some errors. **I'm removing them because of your safety. :)**
 
+# License
+
+[List Manager](https://www.github.com/xiaracclaere/list-manager) © 2025 by Xiara Cclaere is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/legalcode)
+
+Click "CC BY-NC 4.0" or click [Here](https://creativecommons.org/licenses/by-nc/4.0/legalcode) or look at the link in the [License](LICENSE) to get detailed information.
