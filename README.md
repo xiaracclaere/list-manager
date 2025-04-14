@@ -1,44 +1,40 @@
-# Important Note
-
-**The following documentation may contain some informal or slightly incorrect English. I apologize for any confusion it may cause. The purpose of this document is to provide an overview in a straightforward and understandable manner.**
-
 # List Manager
 
 ## What is List Manager?
 
-List Manager is a simple and advanced list management program. 
+List Manager is a simple yet advanced list management program. 
 
 **_Key Features:_**
 
 - **Adding an item to list:**
 
-    Adds the item that you give input to list.
+    Adds the item you type into the list.
 
 - **Deleting an item from list:**
 
-    Deletes the item that you give input to list if it's exists.
+    Deletes the item you type from the list, if it exists.
 
 - **Listing all items of list:**
 
-    Shows all items enumerated of list.
+    Shows all items in list, with numbers.
 
 - **Exiting program:**
 
-    Exits List Manager.
+    Closes List Manager.
 
 ## Why List Manager?
 
-It's don't has a GUI, but it's has a CLI! Forget about difficulty of CLI, List Manager's commands are too easy to learn!
+It's don't has a GUI, but it's has a CLI! Forget about the idea that CLI is hard, List Manager's commands are very easy to learn and very hard to forget.
 
 ## What About Errors of List Manager?
 
-Older versions are not tested completely. Newer versions are testing a lot! So downloading the latest version is recommend.
+Older versions are not tested completely. Newer versions are tested a lot. So it's **recommend** to download the latest version.
 
 # About Versions
 
 ## What is the Releasing Plan of List Manager?
 
-When I complete the new versions. :)
+Whenever I finish a new version. :)
 
 ## Is There Any Unsupporting Versions?
 
@@ -57,11 +53,11 @@ When I complete the new versions. :)
 - v8.1
 - v8.2
 
-**You may not have seen these versions**, because they are **removed from GitHub** when they are stayed 7 days in GitHub by their release time.
+**You may not have seen these versions**, because they are **removed from GitHub** 7 days after their release.
 
 ## What is The Recommend Version?
 
-The recommend versions are grouped:
+They are grouped by purpose:
 
 **_Performance:_**
 
@@ -75,24 +71,24 @@ The recommend versions are grouped:
 
 - List Manager v11.1
 
-**_Snapshot:_**
+**_Snapshot(Early Test):_**
 
 - List Manager v12snapshot1
 
-**_Most Recommend:_**
+**_Most Recommend Overall:_**
 
 - List Manager v11+
 
 ## Can I Get Removed Versions?
 
-**No, almost**. If you can contact me(almost impossible) I can give you a zipped archive of older and removed versions. 
+**Almost no**. If you somehow manage to contact me (which is pretty unlikely), I can send you a zipped archive of the old versions.
 
-### Why are the rules so harsh?
+### Why So Strict?
 
-Because of **safety**. Older versions are not tested and they might have some errors. **I'm removing them because of your safety. :)**
+Because of **safety**. Older versions may contain few bugs. **I'm removing them to protect you. :)**
 
 # License
 
-[List Manager](https://www.github.com/xiaracclaere/list-manager) © 2025 by Xiara Cclaere is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/legalcode)
+[List Manager](https://www.github.com/xiaracclaere/list-manager) © 2025 by [Xiara Cclaere](https://www.github.com/xiaracclaere) is licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/legalcode)
 
-Click "CC BY-NC 4.0" or click [Here](https://creativecommons.org/licenses/by-nc/4.0/legalcode) or look at the link in the [License](LICENSE.md) to get detailed information.
+Click "CC BY-NC 4.0" or [Click Here](https://creativecommons.org/licenses/by-nc/4.0/legalcode) or check the link in the [License](LICENSE.md) for more details.
