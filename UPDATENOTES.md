@@ -404,4 +404,112 @@ Clearing Screen Error (New)
 
 ## List Manager v10
 
-(It's hard to write all of them in one day, I'll complete it later.)
+**_Features:_**
+
+- Variables
+
+    - counter
+ 
+        - It's using in save lists more than 1.
+
+- Functions
+
+    - Main
+ 
+        - Finally the main "while True" loop is running inside of the "main" function.
+    
+    - Save Counter
+ 
+        - Saves the "counter" variable to a file for load the latest list.
+
+    - Load Counter
+ 
+        - Loads the file that variable "counter" is saved to it.
+
+    - Autosave Counter
+ 
+        - Saves the "counter" variable automatically.
+     
+    - New List
+ 
+        - Saves current list and creates a new list.
+     
+    - Reset
+ 
+        - Clears screen and reruns main function.
+
+    - Show Code
+ 
+        - Prints the code of program. (It may can't print all of file.)
+
+    - Export
+ 
+        - Writes the contents of the list in the same order to a ".txt" file.
+        - 
+**_Maintainability:_**
+
+- Code Groups
+
+    - Now code group names are upper.
+ 
+        - Affects to:
+     
+            - "imported" with "IMPORTS"
+            - "functions" with "FUNCTIONS"
+
+    - New code groups:
+ 
+        - ACTIONS
+        - PROGRAM
+        - RUNNING PROGRAM
+
+    - Changed code group names:
+ 
+        - "variables" with "VARIABLES AND LISTS"
+        - "errors" with "ERRORS AND WARNINGS"
+
+**_Errors:_**
+
+- Invalid Input Error
+
+    - Notifies you about text that you given to input is invalid.
+ 
+    - Usage(s):
+ 
+        - main, place:
+     
+            - while True, place:
+         
+                - else
+    
+    - Placeholder of function "invalid".
+
+**_Modifications:_**
+
+- Functions
+
+    - Save
+ 
+        - Now has a parameter named "list_name" to save file as that name. Default is "list".
+
+    - Load
+ 
+        - Now has a parameter named "list_name" to load file as that name. Default is "list".
+
+    - empty
+ 
+        - Deleted this function. Now it's using "EmptyInputError".
+     
+    - invalid
+ 
+        - Deleted this function. Now it's using "InvalidInputError".
+
+**_Bug Fixes:_**
+
+- Functions
+
+    - Clear
+ 
+        - Before, it's tries to deleting a function named "clr" that doesn't exists when cannot clear the terminal screen. Now it's deleting the function "clear". (Itself.)
+     
+(I'll continue)
