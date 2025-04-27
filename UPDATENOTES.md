@@ -353,7 +353,7 @@ Clearing Screen Error (New)
 
 - Code
 
-  - Now the codes are grouped by their type. So spaces are stayed.
+  - Now the codes are grouped by their type. Also spaces are stayed.
 
 **_Features:_**
 
@@ -404,48 +404,8 @@ Clearing Screen Error (New)
 
 ## List Manager v10
 
-**_Features:_**
+### Snapshot 1
 
-- Variables
-
-    - counter
- 
-        - It's using in save lists more than 1.
-
-- Functions
-
-    - Main
- 
-        - Finally the main "while True" loop is running inside of the "main" function.
-    
-    - Save Counter
- 
-        - Saves the "counter" variable to a file for load the latest list.
-
-    - Load Counter
- 
-        - Loads the file that variable "counter" is saved to it.
-
-    - Autosave Counter
- 
-        - Saves the "counter" variable automatically.
-     
-    - New List
- 
-        - Saves current list and creates a new list.
-     
-    - Reset
- 
-        - Clears screen and reruns main function.
-
-    - Show Code
- 
-        - Prints the code of program. (It may can't print all of file.)
-
-    - Export
- 
-        - Writes the contents of the list in the same order to a ".txt" file.
-        - 
 **_Maintainability:_**
 
 - Code Groups
@@ -468,21 +428,75 @@ Clearing Screen Error (New)
         - "variables" with "VARIABLES AND LISTS"
         - "errors" with "ERRORS AND WARNINGS"
 
-**_Errors:_**
+**_Bug Fixes:_**
 
-- Invalid Input Error
+- Functions
 
-    - Notifies you about text that you given to input is invalid.
+    - Clear
  
-    - Usage(s):
+        - Before, it's tries to deleting a function named "clr" that doesn't exists when cannot clear the terminal screen. Now it's deleting the function "clear". (Itself.)
+
+**_Features:_**
+
+- Functions
+
+    - Main
  
-        - main, place:
-     
-            - while True, place:
-         
-                - else
+        - Finally the main "while True" loop is running inside of the "main" function.
+
+    - Reset
+ 
+        - Clears screen and reruns main function.
+
+    - Help
+ 
+        - Shows information about commands.
+
+### Snapshot 2
+
+**_Performance:_**
+
+- Functions
+
+    - Save
+ 
+        - Added a unusual 'f' prefix before "list.pkl".
+
+**_Features:_**
+
+- Functions
+
+    - Show Code
+ 
+        - Prints the code of program. (It may can't print all of file.)
+
+### Snapshot 3
+
+**_Features:_**
+
+- Variables
+
+    - counter
+ 
+        - It's using in save lists more than 1.
+
+- Functions
     
-    - Placeholder of function "invalid".
+    - Save Counter
+ 
+        - Saves the "counter" variable to a file for load the latest list.
+
+    - Load Counter
+ 
+        - Loads the file that variable "counter" is saved to it.
+
+    - Autosave Counter
+ 
+        - Saves the "counter" variable automatically.
+     
+    - New List
+ 
+        - Saves current list and creates a new list.
 
 **_Modifications:_**
 
@@ -504,12 +518,105 @@ Clearing Screen Error (New)
  
         - Deleted this function. Now it's using "InvalidInputError".
 
-**_Bug Fixes:_**
+### Snapshot 4
+
+**_Features:_**
 
 - Functions
 
-    - Clear
+    - Export
  
-        - Before, it's tries to deleting a function named "clr" that doesn't exists when cannot clear the terminal screen. Now it's deleting the function "clear". (Itself.)
+        - Writes the contents of the list in the same order to a ".txt" file.
      
-(I'll continue)
+## List Manager v10.1
+
+**_Features:_**
+
+- Functions
+
+    - About Version
+ 
+        - Gives information about current version.
+
+**_Errors:_**
+
+- Loading List Error (Edited)
+ 
+    - Message is changed from "Can't load list." to "An error occured while loading list!".
+
+- No Lists Error (New)
+
+    - Message is "No created lists!".
+ 
+- Loading Counter Error (New)
+
+    - Message is "An error occured while loading counter!".
+
+- Clear Error (New/Moved)
+
+    - Maked as function from function "clear".
+ 
+    - Message is "Clearing the terminal screen is not supported on your system or cannot be found by the program.".
+
+- Exiting Error (New)
+
+    - Message is "An error occured while exiting program!".
+
+- Saving List Error (New)
+
+    - Message is "An error occured while saving list!".
+
+- Saving Counter Error (New)
+
+    - Message is ""An error occured while saving counter!".
+
+- Autosaving Error (New)
+
+    - Message is "An error occured while autosaving list!".
+
+- Autosaving Counter Error (New)
+
+    - Message is "An error occured while autosaving counter!".
+
+- Exporting Error (New)
+
+    - Message is "An error occured while exporting list!".
+
+## List Manager v11
+
+### Snapshot 1
+
+**_Modifications:_**
+
+- Functions
+
+    - WantCheck
+ 
+        - Renamed as "check"
+
+**_Features:_**
+
+- Functions
+
+    - ProgramErrorLog
+ 
+        - Logs program errors.
+
+    - Error Control
+ 
+        - Does error control and gives a error.
+     
+**_Errors:_**
+
+- Resetting Error (New)
+
+    - Message is "An error occured while resetting program!".
+
+- Too Many Errors (New)
+
+    - Message is "Too many errors!".
+ 
+- Unknown Error (New)
+
+    - Message is "An unknown error has occured!".
+
