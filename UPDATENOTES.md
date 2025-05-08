@@ -620,3 +620,81 @@ Clearing Screen Error (New)
 
     - Message is "An unknown error has occured!".
 
+### Snapshot 2
+
+**_Modifications:_**
+
+- Class System
+
+    - Now every function are in a class
+ 
+        - Affects to:
+     
+            - functions
+         
+                - check
+                - ProgramErrorLog
+                - ErrorLog
+                - save
+                - load
+                - save_counter
+                - load_counter
+                - autosave
+                - autosave_counter
+
+            - errors
+         
+                - EmptyListError
+                - AlreadyExistsError
+                - EmptyInputError
+                - ItemIsNotOnListError
+                - LoadingListError
+                - InvalidInputError
+                - NoListsError
+                - LoadingCounterError
+                - ClearError
+                - ExitingError
+                - SavingListError
+                - SavingCounterError
+                - AutosavingError
+                - ExportingError
+                - ResettingError
+                - ShowingCodeError
+                - TooManyErrors
+                - CodeError
+                - UnknownError
+
+**_Maintainability:_**
+
+- Functions
+
+    - Main
+ 
+        - First clearing and loading codes are sticked.
+
+### Snapshot 3
+
+- **_Modifications:_**
+
+- Functions
+
+    - Main
+ 
+        - Added an undefined function when written "mode".
+
+### Snapshot 4
+
+**General**
+
+**_Features:_**
+
+- Variables
+
+    - Added 2 variables named "mode" and "exited".
+
+**_Modes:_**
+
+- Debug Mode
+
+    - This is the new and second mode of List Manager! This mode is not have some debug tools yet, but they will be added!
+ 
