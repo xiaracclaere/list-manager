@@ -1,2 +1,3 @@
-# list-manager
-Here is the official repository of List Manager project.
+# List Manager
+
+will be edited...
