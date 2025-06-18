@@ -8,7 +8,7 @@
 	"lmuiprovider":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/lmuiprovider.py"},
 	"normal_errors":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/normal_errors.py"},
 	"oldmanager":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/oldmanager.py"},
-	"performanceanalyzer":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/performanceanalyzerv1.py"},
+	"performanceanalyzerv1":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/performanceanalyzerv1.py"},
 	"v1":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/listmanagerv1.py"},
 	"v2":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/listmanagerv2.py"},
 	"v3":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/listmanagerv3.py"},
@@ -49,6 +49,5 @@
 	"v12o1":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/listmanagerv12o1.py"},
 	"v13snapshot1":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/listmanagerv13snapshot1.py"},
 	"v13snapshot2":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/listmanagerv13snapshot2.py"},
-	"v13snapshot3":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/listmanagerv13snapshot3.py"},
-	"v12o1":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/listmanagerv12o1.py"}
+	"v13snapshot3":{"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/listmanagerv13snapshot3.py"}
 	}
