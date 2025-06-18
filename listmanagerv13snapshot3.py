@@ -1,0 +1,878 @@
+#----------------------------------------------
+
+# WELCOME TO THE LIST MANAGER!
+# Happy to see you here!
+# You can look and use this code under the license.
+# As Xiara Cclaere, I'm thankful to you for using this program.
+# :)
+
+#----------------------------------------------
+
+#|/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\|
+#||||||||||||||||||||||||||||||||||||||||||||||
+#|\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/|
+
+#----------------------------------------------
+
+# IMPORTS
+
+#----------------------------------------------
+
+import os, json, time, random
+from normal_errors import *
+from debug_errors import *
+from banners import *
+from lmuiprovider import *
+from lmconfigurator import *
+import performanceanalyzerv1 as performanceanalyzer
+
+#----------------------------------------------
+
+# GLOBAL VARIABLES AND LISTS
+
+#----------------------------------------------
+
+current_file = os.path.dirname(os.path.abspath(__file__))
+
+lst = []
+
+history = []
+
+counter = 1
+
+mode = 0
+
+using = 0
+
+timer = 0
+
+exited = False
+
+v = "13snapshot3"
+
+V = "13 Snapshot 3"
+
+sv = "13s3"
+
+main_choices_showing = ["Add", "Delete", "List", "Clean", "Sort", "New", "Lists", "Export", "Help", "History", "Exit"]
+
+main_choices_all = ["Add", "Delete", "List", "Clean", "Sort", "New", "Lists", "Export", "Help", "History", "Reset", "Code", "Mode", "Exit"]
+
+debug_choices_showing = ["Add", "Delete", "List", "Clean", "Clear", "Sort", "Export", "Timer", "Performance", "Use", "Reset", "Code", "Help", "Mode", "History", "Exit"]
+
+debug_choices_all = ["Add", "Delete", "List", "Clean", "Clear", "Sort", "Export", "Timer", "Performance", "Use", "Reset", "Code", "Help", "Mode", "History", "Exit"]
+
+config_file = os.path.join(current_file, "lmconfig.cfg")
+
+data_file = os.path.join(current_file, "lmdata.json")
+
+#----------------------------------------------
+
+# CONFIGURATION AND SETUP
+
+#----------------------------------------------
+
+def SetupAll():
+    load_config()
+    setup_showing_commands()
+
+#----------------------------------------------
+
+# GLOBAL FUNCTIONS
+
+#----------------------------------------------
+
+# WAITING TIME
+
+def delay(func):
+        def wrapper(*args, **kwargs):
+            if using == 1:
+                time.sleep(timer)
+            return func(*args, **kwargs)
+        return wrapper
+
+# CLEARING SCREEN
+
+@delay
+def clear():
+    if os.name == "nt":
+        os.system("cls")
+    elif os.name == "posix":
+        os.system("clear")
+    else:
+        if mode == 0:
+            ClearError()
+            globals()["clear"] = lambda *args, **kwargs: None
+        elif mode == 1:
+            raise CSE
+
+# MODE SWITCHING
+
+def switch_mode():
+    global mode
+    if mode == 0:
+        clear()
+        print('Welcome to the List Manager Debug Mode! Write "help" to get help. \n')
+        mode = 1
+    elif mode == 1:
+        clear()
+        print('Welcome to the List Manager Config Mode! Write "help" to get help. \n')
+        mode = 2
+    elif mode == 2:
+        clear()
+        print('Welcome to the List Manager! Write "help" to get help. \n')
+        mode = 0
+
+#----------------------------------------------
+
+# NORMAL MODE
+
+#----------------------------------------------
+
+# FUNCTIONS
+
+class functions:
+    global mode
+    @delay
+    def check(real=True):
+        if real:
+            control = input("Do you really want to do this?(Y/n): ")
+            if control == "Y" or control == "y" or control == "":
+                do = True
+            else:
+                do = False
+            return do
+        else:
+            print("Do you really want to do this?(Y/n): Y")
+    
+    def ErrorLog(message):
+        with open("error_logs.txt", "a") as log_file:
+            log_file.write(f"{message}\n")
+
+    def save(lch, name=data_file):
+        data = {}
+        if lch == "l":
+            data[f"list{counter}"] = lst
+        elif lch == "c":
+            data["counter"] = counter
+        elif lch == "h":
+            data["history"] = history
+        else:
+            InvalidInputError()
+        try:
+            with open(name, "r", encoding="utf-8") as f:
+                current = json.load(f)
+        except FileNotFoundError:
+            current = {}
+        current.update(data)
+        with open(name, "w", encoding="utf-8") as f:
+            json.dump(current, f, indent=4, ensure_ascii=False)
+            
+    def load(lch, name=data_file, list_number=1, maxlnrange=counter):
+        global lst, counter, history
+        try:
+            with open(name, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            if lch == "l":
+                if list_number <= maxlnrange:
+                    lst = data.get(f"list{list_number}", [])
+                elif list_number < 1:
+                    lst = data.get("list1", [])
+                else:
+                    lst = data.get(f"list{maxlnrange}", [])
+            elif lch == "c":
+                counter = data.get("counter", 1)
+            elif lch == "h":
+                history = data.get("history", [])
+            else:
+                InvalidInputError()
+        except (FileNotFoundError, json.JSONDecodeError) as e:
+            functions.ErrorLog(f"JSONLoadError: {str(e)}")
+            lst, counter, history = [], 1, []
+
+    def autosave(lch):
+        def decorator(func):
+            def wrapper(*args, **kwargs):
+                result = func(*args, **kwargs)
+                functions.save(lch)
+                return result
+            return wrapper
+        return decorator
+
+    @delay
+    @autosave("h")
+    def helping():
+        clear()
+        print(f"List Manager Help Menu: \n", """
+Add: Adds the text that is written to the desired section after it is written to the list.
+Delete: Deletes the text that is written to the desired section after it is written, if it is in the list.
+List: Lists all the item in the list.
+Clean: Deletes all the item in the list.
+Sort: Sorts all the item in the list.
+New: Creates a new list.
+Version: Gives information about current version of program. 
+Lists: Lists created lists. 
+Export: Exports list to a .txt file. 
+Help: Shows this menu.
+Exit: Ends the program and saves the list.
+            """)
+
+    @delay
+    @autosave("h")
+    def reset():
+        clear()
+        main()
+
+    @delay
+    @autosave("h")
+    def show_code():
+        clear()
+        with open(__file__, "r", encoding="utf-8") as file:
+            print(file.read())
+    
+    @delay
+    @autosave("h")
+    def show_history():
+        clear()
+        print("Command history: ")
+        for i in history:
+            print(i)
+
+    @delay
+    @autosave("h")
+    def exiting():
+        global exited
+        if using == 1:
+            time.sleep(timer)
+        else:
+            pass
+        clear()
+        functions.save("l")
+        functions.save("c")
+        functions.save("h")
+        print("Exiting program... ")
+        exited = True
+
+# ACTIONS
+
+class actions:
+    global mode
+    @functions.autosave("l")
+    @functions.autosave("h")
+    @delay
+    def add(with_input=True):
+        if with_input:
+            while True:
+                item = input("Adding item: ")
+                clear()
+                if item in lst:
+                    AlreadyExistsError()
+                    break
+                elif not item:
+                    EmptyInputError()
+                    continue
+                else:
+                    lst.append(item)
+                    print("Added item to list successfully! ")
+                    break
+            item = ""
+        else:
+            lst.append("debug_mode_test_item_1")
+            lst.append("debug_mode_test_item_2")
+
+    @functions.autosave("l")
+    @functions.autosave("h")
+    @delay
+    def delete(with_input=True):
+        if with_input:
+            if lst:
+                while True:
+                    item = input("Deleting item: ")
+                    clear()
+                    if item in lst:
+                        lst.remove(item)
+                        print("Deleted item from list successfully! ")
+                        break
+                    elif not item:
+                        EmptyInputError()
+                        continue
+                    else:
+                        ItemIsNotOnListError()
+                        break
+                item = ""
+            else:
+                clear()
+                EmptyListError()
+        else:
+            lst.remove("debug_mode_test_item_1")
+
+    @functions.autosave("h")
+    @delay
+    def show():
+        clear()
+        if lst:
+            for a, i in enumerate(lst, start=1):
+                print(f"{a}. {i}")
+        else:
+            EmptyListError()
+
+    @functions.autosave("l")
+    @functions.autosave("h")
+    @delay
+    def clean(with_do=True):
+        if with_do:
+            if lst:
+                do = functions.check()
+                clear()
+                if do:
+                    lst.clear()
+                    print("List is cleaned successfully! ")
+                else:
+                    pass
+            else:
+                clear()
+                EmptyListError()
+        else:
+            lst.clear()
+            lst.append("debug_mode_test_item_3")
+
+    def sort(item):
+        return item
+
+    @functions.autosave("l")
+    @functions.autosave("h")
+    @delay
+    def sort_list(with_do=True):
+        if with_do:
+            if lst:
+                do = functions.check()
+                clear()
+                if do:
+                    lst.sort(key=actions.sort)
+                    print("List is sorted successfully!")
+                else:
+                    pass
+            else:
+                clear()
+                EmptyListError()
+        else:
+            lst.sort(key=actions.sort)
+
+    @functions.autosave("c")
+    @functions.autosave("h")
+    @delay
+    def new_list(with_note=True):
+        if with_note:
+            global lst, counter
+            functions.save(f"list{counter}")
+            counter += 1
+            lst = []
+            clear()
+            print(f"Created new list: lst{counter}")
+            functions.save(f"list{counter}")
+        else:
+            counter += 1
+            lst = []
+
+    @functions.autosave("h")
+    @delay
+    def show_lists(show_truth=True, lists=10):
+        if show_truth:
+            clear()
+            if counter > 1:
+                for i in range(1, counter):
+                    print(f"lst{i}")
+            else:
+                NoListsError()
+        else:
+            for i in range(1, lists):
+                print(f"list{i}")
+
+    def exporting():
+        for i in lst:
+            e = i
+            return e
+
+    @functions.autosave("h")
+    @delay
+    def export(message=exporting, with_note=True):
+        if with_note:
+            try:
+                with open(f"list{counter}.txt", "a") as list_file:
+                    list_file.write(f"{message}\n")
+                clear()
+                print(f"List is exported with name: list{counter}.txt ! ")
+            except:
+                ExportingError()
+        else:
+            with open(f"list{counter}.txt", "a") as list_file:
+                list_file.write(f"{message}\n")
+
+# MODE FUNCTION
+
+def main_mode():
+    global mode
+    print(cui(style2, main_choices_showing), "\n")
+    action = input().strip().lower()
+    history.append(action)
+    functions.save("h")
+    if action == "add":
+        actions.add()
+    elif action == "delete":
+        actions.delete()
+    elif action == "list":
+        actions.show()
+    elif action == "clean":
+        actions.clean()
+    elif action == "sort":
+        actions.sort_list()
+    elif action == "new":
+        actions.new_list()
+    elif action == "lists":
+        actions.show_lists()
+    elif action == "export":
+        actions.export(actions.exporting())
+    elif action == "help":
+        functions.helping()
+    elif action == "reset":
+        functions.reset()
+    elif action == "code":
+        functions.show_code()
+    elif action == "mode":
+        switch_mode()
+    elif action == "history":
+        functions.show_history()
+    elif action == "exit":
+        functions.exiting()
+    elif action == "":
+        clear()
+        EmptyInputError()
+    else:
+        clear()
+        InvalidInputError()
+
+#----------------------------------------------
+
+# DEBUG MODE
+
+#----------------------------------------------
+
+# FUNCTIONS
+
+class debug_functions:
+    global mode
+
+    def exporting():
+        for i in lst:
+            e = i
+            return e
+
+    def reset():
+        time.sleep(timer)
+        main()
+
+    def show_code():
+        time.sleep(timer)
+        with open(__file__, "r", encoding="utf-8") as file: 
+            print(file.read())
+    
+    def show_history():
+        time.sleep(timer)
+        for i in history:
+            print(i)
+
+    def exiting():
+        global exited
+        time.sleep(timer)
+        exited = True
+
+# ACTIONS
+
+class debug_actions:
+    global menu
+    
+    def add(wi=True):
+        time.sleep(timer)
+        if wi:
+            while True:
+                item = input("Item: ")
+                if item in lst:
+                    raise IEILW
+                elif not item:
+                    raise EIE
+                else:
+                    lst.append(item)
+                    break
+            item = ""
+        else:
+            lst.append("debug_mode_test_item_4")
+            lst.append("debug_mode_test_item_5")
+
+    def delete(wi=True):
+        time.sleep(timer)
+        if wi:
+            if lst:
+                while True:
+                    item = input("Item: ")
+                    if item in lst:
+                        lst.remove(item)
+                        break
+                    elif not item:
+                        raise EIE
+                    else:
+                        raise INILW
+                item = ""
+            else:
+                raise EmLW
+        else:
+            lst.remove("debug_mode_test_item_4")
+
+    def show():
+        time.sleep(timer)
+        if lst:
+            for item in lst:
+                print(item)
+        else:
+            raise EmLW
+
+    def clean(wd=True):
+        time.sleep(timer)
+        if wd:
+            if lst:
+                lst.clear()
+            else:
+                raise EmLW
+        else:
+            lst.clear()
+            lst.append("debug_mode_test_item_6")
+
+    def sort(item):
+        return item
+
+    def sort_list():
+        time.sleep(timer)
+        if lst:
+                lst.sort(key=debug_actions.sort)
+        else:
+            raise ExLW
+        
+    def show_lists(st=True, l=10):
+        time.sleep(timer)
+        if st:
+            if counter > 1:
+                for i in range(1, counter):
+                    print(f"list{i}")
+            else:
+                raise NCLW
+        else:
+            for i in range(1, l):
+                    print(f"list{i}")
+
+    def export(message=debug_functions.exporting):
+        time.sleep(timer)
+        try:
+            with open(f"list{counter}.txt", "a") as list_file:
+                list_file.write(f"{message}\n")
+        except:
+            raise ExLW
+        
+# MODE FUNCTION
+
+def debug_mode():
+    global mode
+    global using
+    global timer
+    print(cui(style5, debug_choices_showing), "\n")
+    action = input().strip().lower()
+    history.append("debug" + "_" + action)
+    if action == "add":
+        if using == 0:
+            debug_actions.add()
+        else:
+            actions.add()
+    elif action == "delete":
+        if using == 0:
+            debug_actions.delete()
+        else:
+            actions.delete()
+    elif action == "list":
+        if using == 0:
+            debug_actions.show()
+        else:
+            actions.show()
+    elif action == "clean":
+        if using == 0:
+            debug_actions.clean()
+        else:
+            actions.clean()
+    elif action == "clear":
+        clear()
+    elif action == "sort":
+        if using == 0:
+            debug_actions.sort_list()
+        else:
+            actions.sort_list()
+    elif action == "export":
+        if using == 0:
+            debug_actions.export(debug_functions.exporting)
+        else:
+            actions.export(actions.exporting)
+    elif action == "timer":
+        timer = float(input("Enter waiting time: "))
+    elif action == "performance":
+        performanceanalyzer.main()
+    elif action == "use":
+        if using == 0:
+            clear()
+            using = 1
+        else:
+            clear()
+            using = 0
+    elif action == "reset":
+        if using == 0:
+            debug_functions.reset()
+        else:
+            functions.reset()
+    elif action == "code":
+        debug_functions.show_code()
+    elif action == "mode":
+        switch_mode()
+    elif action == "history":
+        debug_functions.show_history()
+    elif action == "exit":
+        if using == 0:
+            debug_functions.exiting()
+        else:
+            functions.exiting()
+    elif action == "":
+        raise EIE
+    else:
+        raise IIE
+
+#----------------------------------------------
+
+# RUNNING ALL WITH MODES
+
+#----------------------------------------------
+
+# ALL IN ONE TIME
+
+def run_all():
+    functions.check(False)
+    functions.ErrorLog("Error: Not an error! ")
+    functions.save("l")
+    functions.save("c")
+    functions.save("h")
+    functions.load("l")
+    functions.load("c")
+    functions.load("h")
+    clear()
+    functions.helping()
+    functions.show_code()
+    actions.add(False)
+    actions.delete(False)
+    actions.show()
+    actions.clean(False)
+    actions.sort_list(False)
+    actions.new_list(False)
+    actions.show_lists(False, 10)
+    actions.export(actions.exporting, False)
+    EmptyListError()
+    AlreadyExistsError()
+    EmptyInputError()
+    ItemIsNotOnListError()
+    LoadingListError()
+    InvalidInputError()
+    NoListsError()
+    LoadingCounterError()
+    ClearError()
+    ExitingError()
+    SavingListError()
+    SavingCounterError()
+    AutosavingError()
+    AutosavingCounterError()
+    ExportingError()
+    ResettingError()
+    ShowingCodeError()
+    TooManyErrors()
+    CodeError()
+    UnknownError()
+    clear()
+    debug_functions.show_code()
+    debug_actions.add(False)
+    debug_actions.delete(False)
+    debug_actions.show()
+    debug_actions.clean(False)
+    debug_actions.sort_list()
+    debug_actions.show_lists(False, 10)
+    debug_actions.export(debug_functions.exporting)
+    debug_functions.reset()
+
+# ALL IN ORDER
+
+def run_order():
+    functions.check()
+    functions.ErrorLog("Error: Not an error! ")
+    functions.save("l")
+    functions.save("c")
+    functions.save("h")
+    functions.load("l")
+    functions.load("c")
+    functions.load("h")
+    clear()
+    functions.helping()
+    functions.show_code()
+    actions.add()
+    actions.delete()
+    actions.show()
+    actions.clean()
+    actions.sort_list()
+    actions.new_list()
+    actions.show_lists()
+    actions.export()
+    EmptyListError()
+    AlreadyExistsError()
+    EmptyInputError()
+    ItemIsNotOnListError()
+    LoadingListError()
+    InvalidInputError()
+    NoListsError()
+    LoadingCounterError()
+    ClearError()
+    ExitingError()
+    SavingListError()
+    SavingCounterError()
+    AutosavingError()
+    AutosavingCounterError()
+    ExportingError()
+    ResettingError()
+    ShowingCodeError()
+    TooManyErrors()
+    CodeError()
+    UnknownError()
+    clear()
+    debug_functions.show_code()
+    debug_actions.add()
+    debug_actions.delete()
+    debug_actions.show()
+    debug_actions.clean()
+    debug_actions.sort_list()
+    debug_actions.show_lists()
+    debug_actions.export()
+    debug_functions.reset()
+
+#----------------------------------------------
+
+# FUN FACTS
+
+#----------------------------------------------
+
+fun_facts   = ["The longest word in the English language is 'pneumonoultramicroscopicsilicovolcanoconiosis'.",
+            "Bananas are berries, strawberries aren't.",
+            "Honey never spoils, archaeologists found jars full of honey in ancient Egyptian tombs.",
+            "Ducks' quacks don't echo, nobody knows why.",
+            "Sea water is salty because there is the sea in it.",
+            "The average person eats 8 spiders a year is a complete fabrication, but don't sleep soundly. >:)",
+            "When choosing the color of toothbrushes, it is actually difficult to decide among all the colors in the universe.",
+            "A penguin is likely to be having fun while walking on land.",
+            "Watermelons are the only fruit chosen by aliens, or maybe not.",
+            "If a song repeats itself over and over, your brain memorizes it and you end up paying royalties to the song owner without even realizing it.",
+            "If people actually lived 7.5 minutes longer, they would not be doing anything for the last 7.5 minutes.",
+            "If a zombie stays in a room with you for 5 minutes, you don't forget to say 'Hi' to it.",
+            "Actually, ostriches can fly but they are afraid.",
+            "Watermelons just retain more water, but they're fun.",
+            "If there is no world, you still exist, but perhaps on another planet. (Mysterious!)",
+            "If you can read this, you are not blind.",
+            "If you are reading this, you are not dead.",
+            "If you are reading this, you are not a robot.",
+            "If you are reading this, you are not a cat.",
+            "If you are reading this, you are not a dog.",
+            "If you are reading this, you are not a fish.",
+            "You are you, me are me. ",
+            "If you are reading this, you are not a tree.",
+            "If you are reading this, you are not a rock.",
+            "You can see this text in only List Manager, not in any other program.",
+            "If you are reading this, you are not a human. >:)",
+            "If you are reading this, you are not a computer. (can you?)",
+            "If you are reading this, you are not a virus.",
+            "You can't see this text in lower versions of List Manager.",
+            "If you are reading this, you are not a bug."
+            "You can do anything you want, but not in this program.",
+            "1 + 1 = 2, but not in this program.",
+            "Roses are red, violets are blue, if you are reading this, you are not a fool.",
+            "If you are reading this, you are not a fool. >:)",
+            "We have List Manager v12 before GTA VI... :|",
+            "We have first listmanagervxoxsnapshotx!"
+            ]
+
+def fun_fact():
+    print("Fun Fact:", random.choice(fun_facts),"\n")
+
+#----------------------------------------------
+
+# BANNER SELECTION
+
+#----------------------------------------------
+
+def select_banner():
+    global mode, banner
+    banner = random.choice(lmbanners)
+    return banner
+
+#----------------------------------------------
+
+# PROGRAM
+
+#----------------------------------------------
+
+def main():
+    clear()
+
+    functions.load("c")
+    functions.load("l")
+    functions.load("h")
+    functions.save("c")
+    functions.save("l")
+    functions.save("h")
+    
+    global exited
+    
+    SetupAll()
+
+    if mode == 0:
+        print(select_banner())
+        print(f'Welcome to the List Manager! You can write "help" to get help. Version = {V} \n')
+        fun_fact()
+    elif mode == 1:
+        print(f'Welcome to the List Manager Debug Mode! You can write "help" to get help. Version = {V} \n')
+    
+    while True:
+        if mode == 0:
+            main_mode()
+            if exited:
+                break
+        else:
+            print("Debug Mode")
+            debug_mode()
+            if exited:
+                break
+
+#----------------------------------------------
+
+# RUNNING PROGRAM
+
+#----------------------------------------------
+
+if __name__ == "__main__":
+    main()
+
+#----------------------------------------------
+
+# END MESSAGE
+
+#----------------------------------------------
+
+print(f"""
+List Manager Version {V}
+COPYRIGHT 2025 © Xiara Cclaere
+""")
