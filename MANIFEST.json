@@ -1,3 +1,4 @@
+"manifest": {"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/main/MANIFEST.json"},
 "banners": {"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/banners.py"},
 "debug_errors": {"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/debug_errors.py"},
 "lmconfigurator": {"url":"https://raw.githubusercontent.com/xiaracclaere/list-manager/files/lmconfigurator.py"},
